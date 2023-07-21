@@ -1,0 +1,18 @@
+@import "../../../styles/mixins.scss";
+.claimRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 400px;
+  height: 70vh;
+  @include media-xl() {
+    display: none;
+  }
+}
+
+.claimcenter {
+  display: none;
+  @include media-xl() {
+    display: flex;
+  }
+}
