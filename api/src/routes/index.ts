@@ -1,3 +1,4 @@
 import ClaimRouter from "./claim";
-
-export { ClaimRouter };
+import PersonRouter from "./person";
+import TypeClaimRouter from "./typeClaim";
+export { ClaimRouter, PersonRouter , TypeClaimRouter};

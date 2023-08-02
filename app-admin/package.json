@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env APP_ENV=dev next dev -p 3502",
+    "dev": "cross-env APP_ENV=dev next dev -p 4400",
     "build": "next build",
-    "start": "cross-env APP_ENV=prod next start -p 3502",
+    "start": "cross-env APP_ENV=prod next start -p 4400",
     "lint": "next lint"
   },
   "dependencies": {

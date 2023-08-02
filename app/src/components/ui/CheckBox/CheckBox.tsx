@@ -1,35 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./Checkbox.module.scss";
 
-const CheckBox = ({ checkboxes, onAllCheckboxesChecked }: any) => {
-  const [checkboxState, setCheckboxState] = useState(
-    checkboxes.map(() => false)
-  );
-
-  useEffect(() => {
-    const areAllCheckboxesChecked = checkboxState.every(
-      (checkbox: any) => checkbox
-    );
-    onAllCheckboxesChecked(areAllCheckboxesChecked);
-  }, [checkboxState, onAllCheckboxesChecked]);
-
-  const handleCheckboxChange = (index: any) => {
-    const updatedCheckboxState = [...checkboxState];
-    updatedCheckboxState[index] = !updatedCheckboxState[index];
-    setCheckboxState(updatedCheckboxState);
-  };
-
-  return checkboxes.map((checkbox: any, index: any) => (
-    <div key={index} className={styles.checkbox}>
+const CheckBox = ({ onChange, checked }: any) => {
+  return (
+    <div className={styles.checkBox}>
       <input
-        id={`chec${checkbox.id}`}
+        id="check-1"
         type="checkbox"
-        checked={checkboxState[index]}
-        onChange={() => handleCheckboxChange(index)}
+        checked={checked}
+        onChange={onChange}
       />
-      <label htmlFor={`chec${checkbox.id}`}>{checkbox.label}</label>
-      <i style={{ background: checkbox.back }}></i>
+      <label htmlFor="check-1">Aceptar</label>
     </div>
-  ));
+  );
 };
+
 export default CheckBox;

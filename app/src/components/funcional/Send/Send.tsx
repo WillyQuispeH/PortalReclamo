@@ -6,42 +6,52 @@ import BreadCrumbs from "@/components/ui/BreadCrumbs";
 import { Column } from "@/components/layout/Generic";
 import styles from "./Send.module.scss";
 import { Modal, Overlay, ModalTitle, ModalBody } from "@/components/ui/Modal";
-import ButtonIcon from "@/components/ui/ButtonIcon";
 import Message from "@/components/ui/Message";
 import CheckBox from "@/components/ui/CheckBox";
+import { useClaim, usePerson } from "@/store/hooks";
+import MessageInfo from "@/components/ui/MessageInfo";
+import ScreenLoader from "@/components/layout/ScreenLoader";
+import CardSimple from "@/components/ui/CardSimple";
 const Send = () => {
   const router = useRouter();
   const [modal, setModal] = useState(false);
 
   const checkboxes = [
     {
-      id: "uno",
       label: "Asegure la veracidad de la información en el reclamo.",
-      back: "#4A4A4A",
-      checked: false,
     },
     {
-      id: "dos",
       label: " Asumir la responsabilidad legal correspondiente.",
-      back: "#006FB3",
-      checked: false,
     },
     {
-      id: "tres",
       label: "Uso adecuado del portal reclamo",
-      back: "#FE6565",
-      checked: false,
     },
   ];
-  const [allCheckboxesChecked, setAllCheckboxesChecked] = useState(false);
 
-  const handleAllCheckboxesChecked = (checked: any) => {
-    setAllCheckboxesChecked(checked);
+  const {
+    createClaim,
+    isLoadingClaim,
+    isErrorClaim,
+    errorClaim,
+    type_id,
+    body_claim,
+  } = useClaim();
+  const { person } = usePerson();
+
+  const [isChecked, setIsChecked] = useState(true);
+
+  // Función para manejar los cambios en el checkbox
+  const handleCheckBoxChange = () => {
+    setIsChecked(!isChecked);
   };
 
   const onClick = () => {
-    setModal(true);
+    if (person.id !== "" && body_claim !== "" && type_id !== "") {
+      createClaim(person.id, body_claim, type_id);
+      setModal(true);
+    }
   };
+
   const handleOnClickMessage = () => {
     setModal(false);
   };
@@ -57,25 +67,25 @@ const Send = () => {
           onClick={onClick}
           buttonTitle="Enviar"
           title="Enviar mi reclamo"
-          disabled={!allCheckboxesChecked}
+          disabled={isChecked}
         >
-          <h1 className={styles.claimInfo}></h1>
+          <div className={styles.claimInfo}>
+            <h1>{`Nombre: ${person.name} ${person.paternallastname} ${person.maternallastname}`}</h1>
+            <h1>{`Email: ${person.email}`}</h1>
+            <h2>{`Mi reclamo: ${body_claim}`}</h2>
+          </div>
           <div className={styles.sendCenter}>
-          <Column gap="30px">
-            <CheckBox
-              checkboxes={checkboxes}
-              onAllCheckboxesChecked={handleAllCheckboxesChecked}
-            />
-          </Column>
-        </div>
+            {checkboxes.map((item, key) => (
+              <CardSimple key={key} text={item.label} />
+            ))}
+            <CheckBox onChange={handleCheckBoxChange} isChecked={isChecked} />
+          </div>
         </Central>
         <div className={styles.sendRight}>
-          <Column gap="30px">
-            <CheckBox
-              checkboxes={checkboxes}
-              onAllCheckboxesChecked={handleAllCheckboxesChecked}
-            />
-          </Column>
+          {checkboxes.map((item, key) => (
+            <CardSimple key={key} text={item.label} />
+          ))}
+          <CheckBox onChange={handleCheckBoxChange} isChecked={isChecked} />
         </div>
       </Option>
 
@@ -102,6 +112,8 @@ const Send = () => {
           </ModalBody>
         </Modal>
       </Overlay>
+      {isLoadingClaim && <ScreenLoader />}
+      {isErrorClaim && <MessageInfo type="error" msg={errorClaim} />}
     </>
   );
 };

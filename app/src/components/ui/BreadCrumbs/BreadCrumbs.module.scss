@@ -26,25 +26,25 @@
 
 .border {
   border-left: 5px dotted #000;
-  left: 50%;
+  left: 25px;
   position: relative;
   width: 100%;
   height: 100%;
   z-index: 0;
   @include media-xl() {
     width: 80%;
-    left: 10px;
-    height: 50px;
+    left: 40px;
+    height: 20px;
     border-bottom: 5px dotted #666;
     border-left: 0;
   }
 }
 
 .asset {
-  background-color: #006fb3;
+  background-color: #002e39;
   width: 200px;
   height: 50px;
-  border-radius: 50px;
+  border-radius: 50px 5px 5px 50px;
   display: flex;
   cursor: pointer;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -64,7 +64,8 @@
     justify-content: center;
     width: 50px;
     height: 50px;
-    background-color: #4a4a4a;
+    background-color: #002e39;
+    border: 1px solid rgba(135, 153, 160, 0.25);
     border-radius: 50%;
     font-size: 20px;
     font-weight: 700;
@@ -80,7 +81,7 @@
     align-items: center;
     margin-left: 10px;
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 900;
     color: white;
 
     @include media-xl() {
@@ -90,20 +91,20 @@
       height: 30px;
       text-align: center;
       color: #ffffff;
-      font-size: 16px;
+      font-size: 14px;
       font-style: normal;
-      font-weight: 400;
-      background-color: #006fb3;
+      font-weight: 300;
+      background-color: #002e39;
       justify-content: center;
     }
   }
 }
 
 .prev {
-  background-color: #fe6565;
+  background-color: rgb(0, 46, 57, 0.7);
   width: 200px;
   height: 50px;
-  border-radius: 50px;
+  border-radius: 50px 5px 5px 50px;
   display: flex;
   cursor: pointer;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -122,7 +123,8 @@
     justify-content: center;
     width: 50px;
     height: 50px;
-    background-color: #4f2020;
+    background-color: #002e39;
+    border: 1px solid rgba(135, 153, 160, 0.25);
     border-radius: 50%;
     font-size: 20px;
     font-weight: 700;
@@ -138,7 +140,7 @@
     align-items: center;
     margin-left: 10px;
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 900;
     color: white;
 
     @include media-xl() {
@@ -148,10 +150,10 @@
       height: 30px;
       text-align: center;
       color: #ffffff;
-      font-size: 16px;
+      font-size: 14px;
       font-style: normal;
-      font-weight: 400;
-      background-color: #fe6565;
+      font-weight: 300;
+      background-color: rgb(0, 46, 57, 0.7);
       justify-content: center;
     }
   }
@@ -161,7 +163,7 @@
   background-color: #ffffff;
   width: 200px;
   height: 50px;
-  border-radius: 50px;
+  border-radius: 50px 5px 5px 50px;
   display: flex;
   pointer-events: none;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -180,7 +182,8 @@
     justify-content: center;
     width: 50px;
     height: 50px;
-    background-color: #c1c1c1;
+    background-color: #002e39;
+    border: 1px solid rgba(135, 153, 160, 0.25);
     border-radius: 50%;
     font-size: 20px;
     font-weight: 700;
@@ -196,8 +199,8 @@
     align-items: center;
     margin-left: 10px;
     font-size: 16px;
-    font-weight: 300;
-    color: #666;
+    font-weight: 900;
+    color: #002e39;
 
     @include media-xl() {
       border-radius: 5px;
@@ -205,10 +208,10 @@
       width: 100px;
       height: 30px;
       text-align: center;
-      color: #666;
-      font-size: 16px;
+      color: #002e39;
+      font-size: 14px;
       font-style: normal;
-      font-weight: 400;
+      font-weight: 500;
       background-color: #ffffff;
       justify-content: center;
     }

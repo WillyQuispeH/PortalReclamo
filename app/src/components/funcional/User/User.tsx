@@ -3,24 +3,29 @@ import { useRouter } from "next/router";
 import Bar from "@/components/ui/Bar";
 import ContainerForm from "@/components/ui/ContainerForm";
 import InputText from "@/components/ui/InputText";
-import { serialize } from "v8";
+import { unFormatRut, formatRut } from "@/utils/format";
+import { isValidRut } from "@/utils/validate";
 import Button from "@/components/ui/Button";
 import { Central, Left, Right, Option } from "@/components/layout/Option";
-import { Column } from "@/components/layout/Generic";
+import { Column, Row } from "@/components/layout/Generic";
 import BreadCrumbs from "@/components/ui/BreadCrumbs";
 import styles from "./User.module.scss";
+import ClaimType from "@/components/ui/ClaimType";
+import { usePerson } from "@/store/hooks";
+import ScreenLoader from "@/components/layout/ScreenLoader";
 
 const User = () => {
   const dataForm = {
+    rut: { value: "", isValid: true },
     name: { value: "", isValid: true },
-    paternalLastName: { value: "", isValid: true },
-    maternalLastName: { value: "", isValid: true },
+    paternallastname: { value: "", isValid: true },
+    maternallastname: { value: "", isValid: true },
     phone: { value: "", isValid: true },
     email: { value: "", isValid: true },
   };
   const [form, setForm] = useState(dataForm);
   const [errorForm, setErrorForm] = useState(false);
-  const [modal, setmodal] = useState(false);
+  const { createPerson, getByRutPerson, isLoadingPerson, person } = usePerson();
 
   const router = useRouter();
 
@@ -33,18 +38,84 @@ const User = () => {
       },
     });
   };
-  const handleOnClick = () => {
-    router.push("/claim");
+
+  useEffect(() => {
+    if (person.id !== "") {
+      setForm({
+        rut: { value: person.rut, isValid: true },
+        name: { value: person.name || "", isValid: true },
+        paternallastname: {
+          value: person.paternallastname || "",
+          isValid: true,
+        },
+        maternallastname: {
+          value: person.maternallastname || "",
+          isValid: true,
+        },
+        email: { value: person.email || "", isValid: true },
+        phone: { value: person.phone || "", isValid: true },
+      });
+    }
+  }, [person]);
+
+  const handleOnchangeRut = (e: any) => {
+    setForm({
+      ...form,
+      rut: {
+        value: e.target.value,
+        isValid: isValidRut(e.target.value.trim()),
+      },
+      name: { value: "", isValid: true },
+      paternallastname: { value: "", isValid: true },
+      maternallastname: { value: "", isValid: true },
+      email: { value: "", isValid: true },
+      phone: { value: "", isValid: true },
+    });
+  };
+
+  const handleOnFocusRut = (e: any) => {
+    setForm({
+      ...form,
+      rut: {
+        value: unFormatRut(form.rut.value),
+        isValid: isValidRut(unFormatRut(e.target.value.trim())),
+      },
+    });
+  };
+
+  const handleOnBlurRut = (e: any) => {
+    setForm({
+      ...form,
+      rut: {
+        value: formatRut(form.rut.value),
+        isValid: isValidRut(unFormatRut(e.target.value.trim())),
+      },
+    });
+    getByRutPerson(formatRut(form.rut.value));
+  };
+
+  const handleOnClick = async () => {
+    if (errorForm) {
+      createPerson(
+        form.rut.value,
+        form.name.value,
+        form.paternallastname.value,
+        form.maternallastname.value,
+        form.email.value,
+        form.phone.value
+      );
+      router.push("/claim");
+    }
   };
 
   useEffect(() => {
     if (
       form.name.value !== "" &&
       form.name.isValid &&
-      form.paternalLastName.value !== "" &&
-      form.paternalLastName.isValid &&
-      form.maternalLastName.value !== "" &&
-      form.maternalLastName.isValid &&
+      form.paternallastname.value !== "" &&
+      form.paternallastname.isValid &&
+      form.maternallastname.value !== "" &&
+      form.maternallastname.isValid &&
       form.email.value !== "" &&
       form.email.isValid &&
       form.phone.value !== "" &&
@@ -55,10 +126,6 @@ const User = () => {
       setErrorForm(false);
     }
   }, [form]);
-
-  const handleOnClickModal = () => {
-    setmodal(true);
-  };
 
   return (
     <>
@@ -76,6 +143,20 @@ const User = () => {
         >
           <Column gap="20px">
             <Column gap="5px">
+              <Row gap="5px">
+                <InputText
+                  type="text"
+                  onChange={handleOnchangeRut}
+                  onFocus={handleOnFocusRut}
+                  onBlur={handleOnBlurRut}
+                  value={form.rut.value}
+                  label="Rut"
+                  name="rut"
+                  width="200px"
+                  isValid={form.rut.isValid ? "inputText" : "unInputText"}
+                />
+                <ClaimType width="95px" />
+              </Row>
               <InputText
                 type="text"
                 onChange={handleOnchange}
@@ -88,23 +169,23 @@ const User = () => {
               <InputText
                 type="text"
                 onChange={handleOnchange}
-                value={form.paternalLastName.value}
+                value={form.paternallastname.value}
                 label="Apellido paterno"
-                name="paternalLastName"
+                name="paternallastname"
                 width="300px"
                 isValid={
-                  form.paternalLastName.isValid ? "inputText" : "unInputText"
+                  form.paternallastname.isValid ? "inputText" : "unInputText"
                 }
               />
               <InputText
                 type="text"
                 onChange={handleOnchange}
-                value={form.maternalLastName.value}
+                value={form.maternallastname.value}
                 label="Apellido materno"
-                name="maternalLastName"
+                name="maternallastname"
                 width="300px"
                 isValid={
-                  form.maternalLastName.isValid ? "inputText" : "unInputText"
+                  form.maternallastname.isValid ? "inputText" : "unInputText"
                 }
               />
               <InputText
@@ -141,6 +222,7 @@ const User = () => {
       </Option>
 
       <Bar type="bottom" />
+      {isLoadingPerson && <ScreenLoader />}
     </>
   );
 };

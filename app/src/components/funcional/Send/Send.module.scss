@@ -10,6 +10,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 10px;
   width: 400px;
   height: 70vh;
   @include media-xl() {
@@ -20,12 +22,40 @@
   display: none;
   @include media-xl() {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
   }
 }
 .claimInfo {
-  width: 350px;
-  height: 160px;
-  background-color: white;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  border-radius: 7px;
+  width: 550px;
+
+  @include media-xl() {
+    width: 350px;
+  }
+  h1 {
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border-radius: 7px;
+    color: #002e39;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 5px;
+    padding: 10px;
+  }
+  h2 {
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border-radius: 7px;
+    color: #002e39;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 5px;
+    height: 250px;
+    padding: 10px;
+
+    @include media-xl() {
+      height: 150px;
+    }
+  }
 }

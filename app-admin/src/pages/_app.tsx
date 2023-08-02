@@ -11,7 +11,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const user = false;
+  const user = true;
 
   return user ? (
     <Template>

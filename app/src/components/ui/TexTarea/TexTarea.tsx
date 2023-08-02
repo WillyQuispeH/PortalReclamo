@@ -10,6 +10,7 @@ interface ITexTarea {
   name: string;
   width: string;
   label: string;
+  isValid: "texTarea" | "unTexTarea";
 }
 
 const TexTarea = ({
@@ -21,9 +22,10 @@ const TexTarea = ({
   name,
   width,
   label,
+  isValid
 }: ITexTarea) => {
   return (
-    <div className={styles.texTarea} style={{ width }}>
+    <div className={styles[isValid]} style={{ width }}>
       <label>{label}</label>
       <textarea
         placeholder={placeholder}

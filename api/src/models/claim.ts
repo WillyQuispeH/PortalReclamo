@@ -1,15 +1,20 @@
 import pool from "../utils/database";
-const create: any = async (id: string) => {
+const create: any = async (
+  person_id: string,
+  body_claim: string,
+  type_id: string
+) => {
   try {
-    const result = "respuestas";
-
     const resultDataBase = await pool.query(
-      "select * from app.claim where id = $1",
-      [id]
+      `INSERT INTO app.claim
+      ( person_id, body_claim, openingdate, endingdate, type_id)
+      VALUES( $1, $2, NOW(), NOW(), $3) RETURNING *;`,
+      [person_id, body_claim, type_id]
     );
+
     return {
       success: true,
-      data: resultDataBase || null,
+      data: resultDataBase.rows[0] || null,
       error: null,
     };
   } catch (e) {

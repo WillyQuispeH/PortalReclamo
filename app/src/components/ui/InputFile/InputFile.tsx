@@ -27,8 +27,9 @@ const InputFile = ({ text, onFileChange, loader, file }: IFile) => {
       />
       <label htmlFor="file" id="file">
         <span className="material-symbols-outlined" id="iconUpload">
-          drive_folder_upload
+          cloud_upload
         </span>
+        <p>Adjuntar evidencia</p>
       </label>
     </div>
   );

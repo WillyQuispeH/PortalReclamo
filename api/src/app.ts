@@ -17,7 +17,7 @@ class App {
     this.server.use(express.json());
     this.server.use(
       cors({
-        origin: ["http://localhost:3000"],
+        origin: ["http://localhost:4500"],
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allowedHeaders: ["Content-Type,Authorization", "Content-Type", "id"],
       })
@@ -27,6 +27,9 @@ class App {
 
   routes() {
     this.server.use("/api/claim", auth, reqLogger, routes.ClaimRouter);
+    this.server.use("/api/person", auth, reqLogger, routes.PersonRouter);
+    this.server.use("/api/typeclaim", auth, reqLogger, routes.TypeClaimRouter);
   }
 }
+
 export default new App().server;
