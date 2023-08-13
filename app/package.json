@@ -2,6 +2,9 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=14 <15"
+  },
   "scripts": {
     "dev": "cross-env APP_ENV=dev next dev -p 4500",
     "build": "next build",
@@ -22,8 +25,5 @@
     "sass": "^1.63.6",
     "typescript": "5.1.6",
     "zustand": "^4.3.9"
-  },
-  "engines": {
-    "node": ">=14 <15"
   }
 }
