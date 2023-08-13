@@ -21,7 +21,7 @@ WORKDIR /app
 COPY --from=build /app ./
 
 # Exponer el puerto en el que se ejecuta la aplicación
-EXPOSE 4500
+EXPOSE 8000
 
 # Comando para iniciar la aplicación
 CMD ["yarn", "start"]
