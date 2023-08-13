@@ -11,7 +11,7 @@ import TexTarea from "@/components/ui/TexTarea";
 import FileUpload from "@/components/ui/FileUpload";
 import ButtonIcon from "@/components/ui/ButtonIcon";
 import ScreenLoader from "@/components/layout/ScreenLoader";
-import { useClaim, usePerson, useTypeClaim } from "@/store/hooks";
+import { useClaim, useFile, usePerson, useTypeClaim } from "@/store/hooks";
 
 const Claim = () => {
   const router = useRouter();
@@ -20,6 +20,7 @@ const Claim = () => {
     type: { value: "", isValid: true },
     claim: { value: "", isValid: true },
   });
+
   const [isValidForm, setIsValidForm] = useState(false);
 
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -29,8 +30,10 @@ const Claim = () => {
   const { getAllTypeClaim, listTypeClaim } = useTypeClaim();
   const newData = [{ id: "", typename: "Seleccione" }, ...listTypeClaim];
   const { person } = usePerson();
+  const { addFile, fileList, setAddFileLocal, fileListLocal } = useFile();
 
   const handleFilesSelected = (files: File[]) => {
+    setAddFileLocal(files);
     setSelectedFiles(files);
   };
 
@@ -68,7 +71,6 @@ const Claim = () => {
   useEffect(() => {
     if (listTypeClaim) {
       getAllTypeClaim();
-      console.log("getAll");
     }
   }, []);
 
@@ -85,6 +87,19 @@ const Claim = () => {
   const onclick = async () => {
     if (isValidForm && person.id !== "") {
       setDataClaim(form.claim.value, form.type.value);
+
+      const formData = new FormData();
+      if (Array.isArray(selectedFiles)) {
+        selectedFiles.forEach((file, index) => {
+          formData.append(`files`, file);
+        });
+      } else {
+        formData.append("files", selectedFiles);
+      }
+
+      formData.append("claimId", "file");
+      addFile(formData);
+      console.log("abad");
       router.push("/send");
     }
   };
@@ -127,7 +142,7 @@ const Claim = () => {
             <div className={styles.fileClaim}>
               <FileUpload onFilesSelected={handleFilesSelected} />
               <ul>
-                {selectedFiles.map((file, index) => (
+                {fileListLocal.map((file, index) => (
                   <li key={index}>
                     <span onClick={() => handleFilePreviewClick(file)}>
                       Ver
@@ -149,9 +164,10 @@ const Claim = () => {
           <div className={styles.fileClaim}>
             <FileUpload onFilesSelected={handleFilesSelected} />
             <ul>
-              {selectedFiles.map((file, index) => (
+              {fileListLocal.map((file, index) => (
                 <li key={index}>
                   <span onClick={() => handleFilePreviewClick(file)}>Ver</span>
+
                   <p>{file.name}</p>
                   <span
                     className="material-symbols-outlined"

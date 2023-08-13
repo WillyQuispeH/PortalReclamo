@@ -4,6 +4,8 @@ import cors from "cors";
 import * as routes from "./routes";
 import { reqLogger } from "./middlewares/logger";
 import { auth } from "./middlewares/auth";
+import multer from "multer";
+import path from "path";
 
 class App {
   public server: any;
@@ -23,12 +25,22 @@ class App {
       })
     );
     this.server.use(express.urlencoded({ extended: false }));
+
+    const storage = multer.diskStorage({
+      destination: path.join(__dirname, "public/uploads"),
+      filename: (req, file, cb) => {
+        cb(null, new Date().getTime() + path.extname(file.originalname));
+      },
+    });
+
+    this.server.use(multer({ storage }).array("files"));
   }
 
   routes() {
     this.server.use("/api/claim", auth, reqLogger, routes.ClaimRouter);
     this.server.use("/api/person", auth, reqLogger, routes.PersonRouter);
     this.server.use("/api/typeclaim", auth, reqLogger, routes.TypeClaimRouter);
+    this.server.use("/api/file", auth, reqLogger, routes.FileRouter);
   }
 }
 

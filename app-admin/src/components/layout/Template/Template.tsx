@@ -2,12 +2,14 @@ import ScreenMain from "../ScreenMain";
 import NavBar from "@/components/ui/NavBar";
 
 import styles from "./Template.module.scss";
+import CardUser from "@/components/ui/CardUser";
 
 const Template = ({ children }: any) => {
   return (
     <ScreenMain>
       <NavBar/>
       <Content>
+        <CardUser/>
         {children}
       </Content>
     </ScreenMain>

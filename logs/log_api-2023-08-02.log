@@ -26,3 +26,5 @@
 {"level":"info","message":{"data":[],"model":"TypeClaimModels/getAll"},"timestamp":"2023-08-01 19:38:46"}
 {"level":"info","message":{"data":[],"model":"TypeClaimModels/getAll"},"timestamp":"2023-08-01 19:38:46"}
 {"level":"info","message":{"data":{"email":"quispeabadquispe@gmail.com","id":"0dbdf4ee-27e8-4080-bc1b-779a38c9d9ef","maternallastname":"Huamani","name":"Abad","paternallastname":"Quispe","phone":"957902342","rut":"27.648.009-K"},"model":"Person/create"},"timestamp":"2023-08-01 19:38:47"}
+{"level":"info","message":"API listening port 5400","timestamp":"2023-08-01 22:44:03"}
+{"level":"info","message":"Connect Database","timestamp":"2023-08-01 22:44:04"}

@@ -12,7 +12,7 @@ const create = async (req: any, res: any) => {
         error: result.error,
       });
       res.status(500).json({ success: false, data: null, error: result.error });
-  
+
       return;
     }
     createLogger.info({

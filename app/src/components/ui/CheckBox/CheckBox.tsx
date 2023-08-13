@@ -1,13 +1,18 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styles from "./Checkbox.module.scss";
 
-const CheckBox = ({ onChange, checked }: any) => {
+interface ICheckBox {
+  onChange: any;
+  checked: boolean;
+}
+
+const CheckBox = ({ onChange, checked }: ICheckBox) => {
   return (
-    <div className={styles.checkBox}>
+    <div className={styles.checkBoxs}>
       <input
         id="check-1"
         type="checkbox"
-        checked={checked}
+        checked={!checked}
         onChange={onChange}
       />
       <label htmlFor="check-1">Aceptar</label>

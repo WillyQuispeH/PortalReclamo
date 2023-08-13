@@ -1,8 +1,8 @@
 import Welcome from "@/components/funcional/Welcome";
 import React from "react";
 
-const welcome = () => {
+const PageWelcome = () => {
   return <Welcome />;
 };
 
-export default welcome;
+export default PageWelcome;

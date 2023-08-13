@@ -8,7 +8,7 @@ import styles from "./Send.module.scss";
 import { Modal, Overlay, ModalTitle, ModalBody } from "@/components/ui/Modal";
 import Message from "@/components/ui/Message";
 import CheckBox from "@/components/ui/CheckBox";
-import { useClaim, usePerson } from "@/store/hooks";
+import { useClaim, useFile, usePerson } from "@/store/hooks";
 import MessageInfo from "@/components/ui/MessageInfo";
 import ScreenLoader from "@/components/layout/ScreenLoader";
 import CardSimple from "@/components/ui/CardSimple";
@@ -16,7 +16,7 @@ const Send = () => {
   const router = useRouter();
   const [modal, setModal] = useState(false);
 
-  const checkboxes = [
+  const conditions = [
     {
       label: "Asegure la veracidad de la información en el reclamo.",
     },
@@ -36,11 +36,11 @@ const Send = () => {
     type_id,
     body_claim,
   } = useClaim();
+  const { fileList } = useFile();
   const { person } = usePerson();
 
   const [isChecked, setIsChecked] = useState(true);
 
-  // Función para manejar los cambios en el checkbox
   const handleCheckBoxChange = () => {
     setIsChecked(!isChecked);
   };
@@ -56,6 +56,8 @@ const Send = () => {
     setModal(false);
   };
 
+  console.log(fileList);
+
   return (
     <>
       <Bar type="top" />
@@ -70,22 +72,25 @@ const Send = () => {
           disabled={isChecked}
         >
           <div className={styles.claimInfo}>
-            <h1>{`Nombre: ${person.name} ${person.paternallastname} ${person.maternallastname}`}</h1>
+            <h1>
+              {`Nombre: ${person.name} ${person.paternallastname} ${person.maternallastname}`}
+              <span>Archivos({fileList.length})</span>
+            </h1>
             <h1>{`Email: ${person.email}`}</h1>
             <h2>{`Mi reclamo: ${body_claim}`}</h2>
           </div>
           <div className={styles.sendCenter}>
-            {checkboxes.map((item, key) => (
+            {conditions.map((item, key) => (
               <CardSimple key={key} text={item.label} />
             ))}
-            <CheckBox onChange={handleCheckBoxChange} isChecked={isChecked} />
+            <CheckBox onChange={handleCheckBoxChange} checked={isChecked} />
           </div>
         </Central>
         <div className={styles.sendRight}>
-          {checkboxes.map((item, key) => (
+          {conditions.map((item, key) => (
             <CardSimple key={key} text={item.label} />
           ))}
-          <CheckBox onChange={handleCheckBoxChange} isChecked={isChecked} />
+          <CheckBox onChange={handleCheckBoxChange} checked={isChecked} />
         </div>
       </Option>
 
