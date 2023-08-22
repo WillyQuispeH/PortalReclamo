@@ -3,22 +3,17 @@ import apiInstance from "@/utils/api";
 
 type claimState = {
   claim: any;
-  type_id: string;
-  body_claim: string;
   isLoading: boolean;
   isError: boolean;
   error: string;
-  create: (person_id: string, body_claim: string, type_id: string) => void;
+  create: () => void;
   setDataClaim: (body_claim: string, type_id: string) => void;
 };
 
 const initDataClaim = {
   id: "",
-  person_id: "",
-  body_claim: "",
   openingdate: "",
   endingdate: "",
-  type_id: "",
 };
 
 export const claimStore = create<claimState>((set, get) => ({
@@ -29,7 +24,7 @@ export const claimStore = create<claimState>((set, get) => ({
   isError: false,
   error: "",
 
-  create: async (person_id: string, body_claim: string, type_id: string) => {
+  create: async () => {
     try {
       set((state) => ({
         ...state,
@@ -38,11 +33,7 @@ export const claimStore = create<claimState>((set, get) => ({
         error: "",
       }));
 
-      const { data } = await apiInstance.post("/claim/create", {
-        person_id,
-        body_claim,
-        type_id,
-      });
+      const { data } = await apiInstance.post("/claim/create");
 
       set((state) => ({
         ...state,
@@ -52,12 +43,11 @@ export const claimStore = create<claimState>((set, get) => ({
         error: "",
       }));
     } catch (e: any) {
-      console.log(e);
       set((state) => ({
         ...state,
         isLoading: false,
         isError: true,
-        error: e.response.data.error,
+        error: (e as Error).message,
       }));
     }
   },

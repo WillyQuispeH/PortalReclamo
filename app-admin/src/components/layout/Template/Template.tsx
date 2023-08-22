@@ -7,11 +7,9 @@ import CardUser from "@/components/ui/CardUser";
 const Template = ({ children }: any) => {
   return (
     <ScreenMain>
-      <NavBar/>
-      <Content>
-        <CardUser/>
-        {children}
-      </Content>
+      <NavBar />
+      <CardUser />
+      <Content>{children}</Content>
     </ScreenMain>
   );
 };

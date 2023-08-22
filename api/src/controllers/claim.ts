@@ -3,9 +3,7 @@ import createLogger from "../utils/logger";
 
 const create = async (req: any, res: any) => {
   try {
-    const { person_id, body_claim, type_id } = req.body;
-
-    const result = await ModelClaim.create(person_id, body_claim, type_id);
+    const result = await ModelClaim.create();
     if (!result.success) {
       createLogger.error({
         model: "ModelClaim/create",
@@ -15,6 +13,7 @@ const create = async (req: any, res: any) => {
 
       return;
     }
+
     createLogger.info({
       model: "ModelClaim/create",
       data: result.data,
@@ -27,11 +26,13 @@ const create = async (req: any, res: any) => {
 
 const getById = async (req: any, res: any) => {
   try {
-    const { id } = req.body;
+    const { claim_id } = req.body;
 
-    const result = await ModelClaim.getById(id);
+    const result = await ModelClaim.getById(claim_id);
 
-    res.status(200).json({ success: true, data: result, error: null });
+    res
+      .status(200)
+      .json({ success: true, data: result.data.data, error: null });
   } catch (e) {
     res.status(200).json({ success: false, data: null, error: e });
   }
@@ -53,11 +54,12 @@ const getAll = async (req: any, res: any) => {
   try {
     const result = await ModelClaim.getAll();
 
-    res.status(200).json({ success: true, data: result, error: null });
+    res.status(200).json({ success: true, data: result.data, error: null });
   } catch (e) {
     res.status(200).json({ success: false, data: null, error: e });
   }
 };
+
 const deleteClaim = async (req: any, res: any) => {
   try {
     const { id } = req.body;

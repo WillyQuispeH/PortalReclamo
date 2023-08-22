@@ -6,12 +6,9 @@
   gap: 22px;
 }
 .contenDate {
-  position: absolute;
   display: flex;
-  align-items: center;
+  align-items:flex-end;
   justify-content: center;
-  top: 20px;
-  right: 30px;
 }
 
 .claimUrgent {

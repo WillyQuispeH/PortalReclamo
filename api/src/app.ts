@@ -19,7 +19,7 @@ class App {
     this.server.use(express.json());
     this.server.use(
       cors({
-        origin: ["http://localhost:4500"],
+        origin: ["http://localhost:8000", "http://localhost:4400"],
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allowedHeaders: ["Content-Type,Authorization", "Content-Type", "id"],
       })
@@ -38,9 +38,16 @@ class App {
 
   routes() {
     this.server.use("/api/claim", auth, reqLogger, routes.ClaimRouter);
+    this.server.use(
+      "/api/claimDetail",
+      auth,
+      reqLogger,
+      routes.ClaimDetailRouter
+    );
     this.server.use("/api/person", auth, reqLogger, routes.PersonRouter);
     this.server.use("/api/typeclaim", auth, reqLogger, routes.TypeClaimRouter);
     this.server.use("/api/file", auth, reqLogger, routes.FileRouter);
+    this.server.use("/api/user", auth, reqLogger, routes.UserRouter);
   }
 }
 

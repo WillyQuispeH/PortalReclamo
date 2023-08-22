@@ -13,7 +13,11 @@ const usePerson = () => {
     error: state.error,
   }));
 
-  const { create: createPerson, getByRut: getByRutPerson } = personStore();
+  const {
+    create: createPerson,
+    getByRut: getByRutPerson,
+    setPerson,
+  } = personStore();
 
   return {
     person,
@@ -22,6 +26,7 @@ const usePerson = () => {
     errorPerson,
     getByRutPerson,
     createPerson,
+    setPerson,
   };
 };
 

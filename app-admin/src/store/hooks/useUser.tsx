@@ -15,7 +15,12 @@ const useUser = () => {
     error: state.error,
   }));
 
-  const { validate: validateUser, recoveryPassword } = userStore();
+  const {
+    validate: validateUser,
+    recoveryPassword,
+    create: createUser,
+    remove: removeUser,
+  } = userStore();
 
   return {
     user,
@@ -25,6 +30,8 @@ const useUser = () => {
     errorUser,
     validateUser,
     recoveryPassword,
+    createUser,
+    removeUser,
   };
 };
 

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styles from "./InputFile.module.scss";
+import Loader from "../Loader";
+import LoaderCircle from "../LoaderCircle";
 interface IFile {
   text: string;
   onFileChange: (file: File | null) => void;
@@ -27,7 +29,7 @@ const InputFile = ({ text, onFileChange, loader, file }: IFile) => {
       />
       <label htmlFor="file" id="file">
         <span className="material-symbols-outlined" id="iconUpload">
-          cloud_upload
+          {loader ? <LoaderCircle width="80px" /> : "cloud_upload"}
         </span>
         <p>Adjuntar evidencia</p>
       </label>

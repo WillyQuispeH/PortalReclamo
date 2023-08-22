@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import styles from "./FileUpload.module.scss";
+import Loader from "../Loader";
+import LoaderCircle from "../LoaderCircle";
 
 interface FileUploaderProps {
   onFilesSelected: (files: File[]) => void;
+  loader: boolean;
 }
 
-const FileUpload = ({ onFilesSelected }: FileUploaderProps) => {
+const FileUpload = ({ onFilesSelected, loader }: FileUploaderProps) => {
   const handleFileChange = (e: any) => {
     if (e.target.files) {
       const files = Array.from(e.target.files) as File[];
@@ -25,9 +28,9 @@ const FileUpload = ({ onFilesSelected }: FileUploaderProps) => {
       />
       <label htmlFor="fileUpload" id="fileUpload">
         <span className="material-symbols-outlined" id="iconUpload">
-          cloud_upload
+          {loader ? <LoaderCircle width="50px" /> : "cloud_upload"}
         </span>
-        <p>Adjuntar evidencia</p>
+        <p> {loader ? "Cargando..." : "Adjuntar evidencia"}</p>
       </label>
     </div>
   );

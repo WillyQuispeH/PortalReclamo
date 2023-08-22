@@ -1,8 +1,7 @@
 import Claim from "@/components/funcional/Claim";
-import React from "react";
 
-const claim = () => {
+const PageClaim = () => {
   return <Claim />;
 };
 
-export default claim;
+export default PageClaim;

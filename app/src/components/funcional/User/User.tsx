@@ -10,8 +10,8 @@ import { Central, Left, Right, Option } from "@/components/layout/Option";
 import { Column, Row } from "@/components/layout/Generic";
 import BreadCrumbs from "@/components/ui/BreadCrumbs";
 import styles from "./User.module.scss";
-import ClaimType from "@/components/ui/ClaimType";
-import { usePerson } from "@/store/hooks";
+import ClaimType from "@/components/ui/CardType";
+import { useClaim, usePerson } from "@/store/hooks";
 import ScreenLoader from "@/components/layout/ScreenLoader";
 
 const User = () => {
@@ -26,8 +26,11 @@ const User = () => {
   const [form, setForm] = useState(dataForm);
   const [errorForm, setErrorForm] = useState(false);
   const { createPerson, getByRutPerson, isLoadingPerson, person } = usePerson();
+  const { createClaim, claim } = useClaim();
+  const [clicked, setClicked] = useState(false);
 
   const router = useRouter();
+  const { claimId } = router.query;
 
   const handleOnchange = (e: any) => {
     setForm({
@@ -104,7 +107,16 @@ const User = () => {
         form.email.value,
         form.phone.value
       );
-      router.push("/claim");
+
+      if (claimId) {
+        router.push({
+          pathname: "/claim",
+          query: { claimId: claimId },
+        });
+      } else {
+        createClaim();
+        setClicked(true);
+      }
     }
   };
 
@@ -127,13 +139,22 @@ const User = () => {
     }
   }, [form]);
 
+  useEffect(() => {
+    if (claim.id !== "" && clicked) {
+      router.push({
+        pathname: "/claim",
+        query: { claimId: claim.id },
+      });
+    }
+  }, [claim, clicked]);
+
   return (
     <>
       <Bar type="top" />
 
       <Option>
         <Left>
-          <BreadCrumbs path={router.asPath} />
+          <BreadCrumbs path={router.pathname} />
         </Left>
         <Central
           onClick={handleOnClick}

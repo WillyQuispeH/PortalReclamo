@@ -1,3 +1,3 @@
-
 import useUser from "./useUser";
-export { useUser };
+import useClaim from "./useClaim";
+export { useUser, useClaim };

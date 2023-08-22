@@ -4,10 +4,7 @@ export interface IUser {
   name: string;
   email: string;
   phone: string;
-  address: string;
-  district: string;
-  person_id: string;
-  apartament: string;
-  maternalLastName: string;
-  paternalLastName: string;
+  maternallastname: string;
+  paternallastname: string;
+  photo: string;
 }

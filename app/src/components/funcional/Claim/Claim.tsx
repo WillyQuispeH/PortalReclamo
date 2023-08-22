@@ -11,49 +11,76 @@ import TexTarea from "@/components/ui/TexTarea";
 import FileUpload from "@/components/ui/FileUpload";
 import ButtonIcon from "@/components/ui/ButtonIcon";
 import ScreenLoader from "@/components/layout/ScreenLoader";
-import { useClaim, useFile, usePerson, useTypeClaim } from "@/store/hooks";
+import {
+  useFile,
+  usePerson,
+  useTypeClaim,
+  useClaimDetail,
+  useClaimData,
+} from "@/store/hooks";
+import FileList from "@/components/ui/FileList";
 
 const Claim = () => {
   const router = useRouter();
-
+  const { claimId } = router.query;
   const [form, setForm] = useState({
     type: { value: "", isValid: true },
     claim: { value: "", isValid: true },
   });
 
   const [isValidForm, setIsValidForm] = useState(false);
-
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [modal, setModal] = useState(false);
   const [previewImage, setPreviewImage] = useState<string>("");
-  const { isLoadingClaim, setDataClaim, body_claim, type_id } = useClaim();
+  const [onchange, setOnchange] = useState(false);
   const { getAllTypeClaim, listTypeClaim } = useTypeClaim();
   const newData = [{ id: "", typename: "Seleccione" }, ...listTypeClaim];
   const { person } = usePerson();
-  const { addFile, fileList, setAddFileLocal, fileListLocal } = useFile();
+  const { addFile, fileList, removeFile, isLoadingFile } = useFile();
+  const { createClaimDetail, claimDetail, isLoadingClaimDetail } =
+    useClaimDetail();
+  const { isLoadingClaimData } = useClaimData();
 
   const handleFilesSelected = (files: File[]) => {
-    setAddFileLocal(files);
     setSelectedFiles(files);
-  };
-
-  const handleFilePreviewClick = (file: File) => {
-    setModal(true);
-    setPreviewImage(URL.createObjectURL(file));
-  };
-
-  const handleRemoveFile = (file: File) => {
-    setSelectedFiles((prevFiles) => prevFiles.filter((f) => f !== file));
+    setOnchange(true);
   };
 
   useEffect(() => {
-    if (type_id && body_claim) {
+    if (selectedFiles.length > 0 && claimId && onchange) {
+      const formData = new FormData();
+      if (Array.isArray(selectedFiles)) {
+        selectedFiles.forEach((file, index) => {
+          formData.append(`files`, file);
+        });
+      } else {
+        formData.append("files", selectedFiles);
+      }
+      formData.append("claim_id", claimId?.toString() || "");
+      addFile(formData);
+      setOnchange(false);
+    }
+  }, [onchange]);
+
+  const handleFilePreviewClick = (url: string) => {
+    setModal(true);
+    setPreviewImage(url);
+  };
+
+  const handleRemoveFile = (public_id: string) => {
+    if (claimId) {
+      removeFile(public_id, claimId?.toString());
+    }
+  };
+
+  useEffect(() => {
+    if (claimDetail) {
       setForm({
-        type: { value: type_id || "", isValid: true },
-        claim: { value: body_claim, isValid: true },
+        type: { value: claimDetail.type_id, isValid: true },
+        claim: { value: claimDetail.claim_body, isValid: true },
       });
     }
-  }, [type_id, body_claim]);
+  }, [claimDetail]);
 
   useEffect(() => {
     if (
@@ -85,31 +112,25 @@ const Claim = () => {
   };
 
   const onclick = async () => {
-    if (isValidForm && person.id !== "") {
-      setDataClaim(form.claim.value, form.type.value);
-
-      const formData = new FormData();
-      if (Array.isArray(selectedFiles)) {
-        selectedFiles.forEach((file, index) => {
-          formData.append(`files`, file);
-        });
-      } else {
-        formData.append("files", selectedFiles);
-      }
-
-      formData.append("claimId", "file");
-      addFile(formData);
-      console.log("abad");
-      router.push("/send");
+    if (isValidForm && person.id !== "" && claimId) {
+      createClaimDetail(
+        claimId.toString(),
+        form.claim.value,
+        form.type.value,
+        person.id
+      );
+      router.push({
+        pathname: "/send",
+        query: { claimId: claimId },
+      });
     }
   };
-
   return (
     <>
       <Bar type="top" />
       <Option>
         <Left>
-          <BreadCrumbs path={router.asPath} />
+          <BreadCrumbs path={router.pathname} />
         </Left>
         <Central
           onClick={onclick}
@@ -140,48 +161,56 @@ const Claim = () => {
           </Column>
           <div className={styles.claimcenter}>
             <div className={styles.fileClaim}>
-              <FileUpload onFilesSelected={handleFilesSelected} />
-              <ul>
-                {fileListLocal.map((file, index) => (
-                  <li key={index}>
-                    <span onClick={() => handleFilePreviewClick(file)}>
-                      Ver
-                    </span>
-                    <p>{file.name}</p>
-                    <span
-                      className="material-symbols-outlined"
-                      onClick={() => handleRemoveFile(file)}
-                    >
-                      delete
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              {fileList.length <= 0 ? (
+                <FileUpload
+                  onFilesSelected={handleFilesSelected}
+                  loader={isLoadingFile}
+                />
+              ) : (
+                <ul>
+                  {fileList.map((file, index) => (
+                    <FileList
+                      key={index}
+                      url={file.url}
+                      isLoading={isLoadingFile}
+                      public_id={file.public_id}
+                      onClickPreview={() => handleFilePreviewClick(file.url)}
+                      onClickRemove={() => {
+                        handleRemoveFile(file.public_id);
+                      }}
+                    />
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </Central>
         <div className={styles.claimRight}>
           <div className={styles.fileClaim}>
-            <FileUpload onFilesSelected={handleFilesSelected} />
-            <ul>
-              {fileListLocal.map((file, index) => (
-                <li key={index}>
-                  <span onClick={() => handleFilePreviewClick(file)}>Ver</span>
-
-                  <p>{file.name}</p>
-                  <span
-                    className="material-symbols-outlined"
-                    onClick={() => handleRemoveFile(file)}
-                  >
-                    delete
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {fileList.length <= 0 ? (
+              <FileUpload
+                onFilesSelected={handleFilesSelected}
+                loader={isLoadingFile}
+              />
+            ) : (
+              <ul>
+                {fileList.map((file, index) => (
+                  <FileList
+                    key={index}
+                    url={file.url}
+                    public_id={file.public_id}
+                    isLoading={isLoadingFile}
+                    onClickPreview={() => handleFilePreviewClick(file.url)}
+                    onClickRemove={() => {
+                      handleRemoveFile(file.public_id);
+                    }}
+                  />
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </Option>
-
       <Bar type="bottom" />
       <Overlay active={modal}>
         <Modal>
@@ -201,7 +230,7 @@ const Claim = () => {
           </ModalBody>
         </Modal>
       </Overlay>
-      {isLoadingClaim && <ScreenLoader />}
+      {isLoadingClaimDetail || (isLoadingClaimData && <ScreenLoader />)}
     </>
   );
 };

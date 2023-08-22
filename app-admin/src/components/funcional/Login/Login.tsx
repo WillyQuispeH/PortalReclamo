@@ -8,7 +8,8 @@ import Button from "@/components/ui/Button";
 import { isValidEmail } from "@/util/validate";
 
 import styles from "./Login.module.scss";
-
+import { useUser } from "@/store/hooks";
+import { Email } from "@clerk/nextjs/dist/types/server";
 const Login = () => {
   const inicialForm = {
     email: {
@@ -23,6 +24,7 @@ const Login = () => {
 
   const router = useRouter();
   const [form, setForm] = useState(inicialForm);
+  const { validateUser, isLoadingUser } = useUser();
 
   const handleOnChangePassWord = (e: any) => {
     setForm({
@@ -45,11 +47,7 @@ const Login = () => {
   };
 
   const handleOnclickLogin = async () => {
-    try {
-      router.push("/welcome");
-    } catch (error: any) {
-      console.error("error", error);
-    }
+    validateUser(form.email.value, form.password.value);
   };
 
   return (
@@ -83,6 +81,7 @@ const Login = () => {
               valor={"Ingresar"}
               width="200px"
               height="40px"
+              isLoading={isLoadingUser}
             />
           </Column>
         </div>

@@ -8,14 +8,14 @@ const useClaim = () => {
     isError: isErrorFile,
     error: errorFile,
   } = fileStore((state) => ({
-    fileListLocal:state.fileListLocal,
+    fileListLocal: state.fileListLocal,
     fileList: state.fileList,
     isLoading: state.isLoading,
     isError: state.isError,
     error: state.error,
   }));
 
-  const { add: addFile , setAddFileLocal} = fileStore();
+  const { add: addFile, setFile, remove: removeFile } = fileStore();
 
   return {
     fileList,
@@ -24,7 +24,8 @@ const useClaim = () => {
     isErrorFile,
     errorFile,
     addFile,
-    setAddFileLocal
+    removeFile,
+    setFile,
   };
 };
 

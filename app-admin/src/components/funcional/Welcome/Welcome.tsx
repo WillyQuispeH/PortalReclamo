@@ -69,20 +69,21 @@ const Welcome = () => {
 
   return (
     <>
-      <div className={styles.contenDate}>
-        <InputDate
-          width="250px"
-          onChange={handleOnchageDate}
-          value={date.value}
-          label="Fecha"
-          name="date"
-        />
-      </div>
       <div className={styles.welcome}>
         <Row gap="22px">
           <CardInfo title="Total de reclamos" icon="campaign" value="2698988" />
           <CardInfo title="Reclamos urgentes" icon="warning" value="268" />
           <CardInfo title="Reclamos sin gestión" icon="problem" value="2698" />
+
+          <div className={styles.contenDate}>
+            <InputDate
+              width="218px"
+              onChange={handleOnchageDate}
+              value={date.value}
+              label="Fecha"
+              name="date"
+            />
+          </div>
         </Row>
         <Row gap="22px">
           <BarGraph data={data} options={options} title="Total de reclamos" />

@@ -10,9 +10,12 @@ interface IBreadCrumbs {
 
 const BreadCrumbs = ({ path }: IBreadCrumbs) => {
   const router = useRouter();
-
+  const { claimId } = router.query;
   const handleClickOption = (text: string) => {
-    router.push(text);
+    router.push({
+      pathname: text,
+      query: { claimId: claimId },
+    });
   };
 
   var asset = 0;

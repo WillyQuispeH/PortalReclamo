@@ -1,14 +1,16 @@
 import { create } from "zustand";
 import apiInstance from "@/utils/api";
+import IFile from "@/interfaces/file";
 
 type fileState = {
-  fileList: any[];
+  fileList: IFile[];
   fileListLocal: any[];
   isLoading: boolean;
   isError: boolean;
   error: string;
   add: (file: any) => void;
-  setAddFileLocal: (file: any) => void;
+  setFile: (file: any) => void;
+  remove: (public_is: string, claim_id: string) => void;
 };
 
 const initDataClaim = {
@@ -51,11 +53,42 @@ export const fileStore = create<fileState>((set, get) => ({
       }));
     }
   },
-  setAddFileLocal: async (files: any) => {
+
+  remove: async (public_id: string, claim_id: string) => {
     try {
       set((state) => ({
         ...state,
-        fileListLocal: files,
+        isLoading: true,
+        isError: false,
+        error: "",
+      }));
+
+      const { data } = await apiInstance.post("/file/remove", {
+        public_id,
+        claim_id,
+      });
+
+      set((state) => ({
+        ...state,
+        fileList: data.data,
+        isLoading: false,
+        isError: false,
+        error: "",
+      }));
+    } catch (e) {
+      set((state) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        error: (e as Error).message,
+      }));
+    }
+  },
+  setFile: async (files: any) => {
+    try {
+      set((state) => ({
+        ...state,
+        fileList: files,
         isLoading: false,
         isError: false,
         error: "",

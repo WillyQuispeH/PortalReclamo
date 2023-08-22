@@ -46,4 +46,38 @@ const getByRut: any = async (rut: string) => {
     return { success: false, data: null, error: (e as Error).message };
   }
 };
-export { create, getByRut };
+
+const getByEmail: any = async (email: string) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, rut, "name", paternallastname, maternallastname, email, phone
+      FROM app.persona WHERE email = $1; `,
+      [email]
+    );
+    return {
+      success: true,
+      data: result.rows[0],
+      error: null,
+    };
+  } catch (e) {
+    return { success: false, data: null, error: (e as Error).message };
+  }
+};
+
+const getById: any = async (person_id: string) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, rut, "name", paternallastname, maternallastname, email, phone
+      FROM app.persona WHERE id = $1; `,
+      [person_id]
+    );
+    return {
+      success: true,
+      data: result.rows[0],
+      error: null,
+    };
+  } catch (e) {
+    return { success: false, data: null, error: (e as Error).message };
+  }
+};
+export { create, getByRut, getByEmail, getById };

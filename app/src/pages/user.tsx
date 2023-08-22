@@ -1,8 +1,12 @@
 import User from "@/components/funcional/User";
+import { useRouter } from "next/router";
 import React from "react";
 
-const user = () => {
+const PageUser = () => {
+  const router = useRouter();
+
+  
   return <User />;
 };
 
-export default user;
+export default PageUser;

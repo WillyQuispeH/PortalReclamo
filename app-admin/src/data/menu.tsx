@@ -19,6 +19,15 @@ const optionMenu = [
     title: "Mi cuenta",
     path: "/user",
   },
+  {
+    icon: "breaking_news_alt_1",
+    title: "Tipo de reclamo",
+    path: "/claimType",
+  },
+  {
+    icon: "list_alt",
+    title: "Lista de reclamos",
+    path: "/claim",
+  },
 ];
 export { optionMenu };
-
