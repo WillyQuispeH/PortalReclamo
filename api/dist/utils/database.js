@@ -9,7 +9,7 @@ const logger_1 = __importDefault(require("../utils/logger"));
 const { Pool } = pg_1.default;
 const pool = new Pool({
     connectionString: config_1.default.database_connection,
-    ssl: true,
+    // ssl: true,
 });
 pool.connect(function (err) {
     if (err) {
