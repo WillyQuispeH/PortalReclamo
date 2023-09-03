@@ -6,7 +6,7 @@ const { Pool } = pg;
 
 const pool = new Pool({
   connectionString: config.database_connection,
-  ssl: true,
+  // ssl: true,
 });
 
 pool.connect(function (err: any) {

@@ -29,6 +29,7 @@
   },
   "scripts": {
     "dev": "nodemon src/server.ts",
-    "start": "nodemon src/server.ts"
+    "start": "node src/server.ts",
+    "build": "tsc"
   }
 }
