@@ -20,9 +20,9 @@ WORKDIR /app
 # Copiar los archivos de la etapa de compilación
 COPY --from=build /app ./
 
-ENV PORT=8000
+ENV PORT=10000
 # Exponer el puerto en el que se ejecuta la aplicación
-EXPOSE 8000
+EXPOSE 10000
 
 # Comando para iniciar la aplicación
 CMD ["yarn", "start"]
