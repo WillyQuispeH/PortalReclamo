@@ -1,4 +1,5 @@
 # Etapa de compilación
+FROM --platform=linux/amd64 <image>
 FROM node:16-alpine AS build
 
 # Directorio de trabajo en el contenedor
@@ -22,7 +23,7 @@ COPY --from=build /app ./
 
 ENV PORT=8000
 # Exponer el puerto en el que se ejecuta la aplicación
-EXPOSE 4502
+EXPOSE 8000
 
 # Comando para iniciar la aplicación
 CMD ["yarn", "start"]
